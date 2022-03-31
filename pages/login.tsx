@@ -2,11 +2,10 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { Alert, Button, Form } from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
-import type { AuthError, AuthErrorCodes } from 'firebase/auth'
 
 const Login = () => {
   const router = useRouter()
-  const { user, login } = useAuth()
+  const { login } = useAuth()
   const [data, setData] = useState({
     email: '',
     password: '',

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:watch": "jest --watch",
+    "test": "jest"
   },
   "dependencies": {
     "bootstrap": "^5.1.3",
