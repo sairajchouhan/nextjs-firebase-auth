@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Alert, Button, Form } from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
+import type { AuthError, AuthErrorCodes } from 'firebase/auth'
 
 const Login = () => {
   const router = useRouter()
@@ -10,16 +11,20 @@ const Login = () => {
     email: '',
     password: '',
   })
+  const [error, setError] = useState<any>(null)
 
   const handleLogin = async (e: any) => {
     e.preventDefault()
+    if (data.email.trim() === '' || data.password.trim() === '') return
 
-    console.log(user)
     try {
       await login(data.email, data.password)
       router.push('/dashboard')
-    } catch (err) {
-      console.log(err)
+    } catch (err: any) {
+      setError({
+        code: err.code,
+        message: err.message,
+      })
     }
   }
 
@@ -32,6 +37,14 @@ const Login = () => {
     >
       <h1 className="text-center my-3 ">Login</h1>
       <Form onSubmit={handleLogin}>
+        {error ? (
+          <Alert variant="danger">
+            <Alert.Heading>
+              {(error.code as string).split('/').slice(-1)}
+            </Alert.Heading>
+          </Alert>
+        ) : null}
+
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control
@@ -42,7 +55,6 @@ const Login = () => {
               })
             }
             value={data.email}
-            required
             type="email"
             placeholder="Enter email"
           />
@@ -58,7 +70,6 @@ const Login = () => {
               })
             }
             value={data.password}
-            required
             type="password"
             placeholder="Password"
           />
