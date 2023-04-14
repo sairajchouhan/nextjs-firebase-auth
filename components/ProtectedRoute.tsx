@@ -3,11 +3,11 @@ import React, { useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth()
+  const { loading, user } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (!user) {
+    if (!loading && !user) {
       router.push('/login')
     }
   }, [router, user])
